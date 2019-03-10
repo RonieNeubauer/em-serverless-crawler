@@ -32,5 +32,6 @@ Resources:
     Type: AWS::SQS::Queue
     Properties:
       QueueName: serverless_crawler_queue
+      VisibilityTimeout: 90
 
 # Outputs:
