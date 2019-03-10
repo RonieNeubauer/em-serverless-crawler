@@ -1,0 +1,36 @@
+---
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: >
+  Stack for chalice serverless crawler. Presented on EBANX Meetups.
+
+# Metadata:
+
+# Parameters:
+
+# Mappings:
+
+# Conditions:
+
+Resources:
+
+  IndexTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: "id"
+          AttributeType: "N"
+      KeySchema:
+        - AttributeName: "id"
+          KeyType: "HASH"
+      BillingMode: PROVISIONED
+      TableName: serverless_crawler_index
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+  Queue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: serverless_crawler_queue
+
+# Outputs:
