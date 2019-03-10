@@ -151,6 +151,13 @@ def get_property_list(suffix):
 @app.route('/crawl')
 def crawl():
 
+    # Build the sqs client
+    client = boto3.client('sqs')
+
+    queue_url = client.get_queue_url(
+        QueueName='serverless_crawler_queue'
+    )['QueueUrl']
+
     # Get request context
     request = app.current_request
 
@@ -172,6 +179,13 @@ def crawl():
         obj[url] = {}
         obj[url]['ids'] = ids
         obj[url]['paginator'] = pag
+
+        for id in ids:
+
+            client.send_message(
+                QueueUrl=queue_url,
+                MessageBody=json.dumps({'id': id})
+            )
 
     return obj
 
